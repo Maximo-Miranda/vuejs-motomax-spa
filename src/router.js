@@ -1,25 +1,88 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import LayoutComponent from './components/shared/LayoutComponent'
+import UserComponent from './components/UserComponent'
+import store from './store/store'
+import MotorcycleComponent from './components/MotorcycleComponent'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
-  ]
+const router = new Router({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [{
+        path: '/',
+        component: LayoutComponent,
+        redirect: { name: 'home' },
+        children: [
+            { path: 'home', component: Home, name: 'home' },
+            { path: 'users', component: UserComponent, name: 'users' },
+            { path: 'motorcycles', component: MotorcycleComponent, name: 'motorcycles' }
+        ]
+    }, {
+        path: '/login',
+        name: 'login',
+        component: () =>
+            import ( /* webpackChunkName: "about" */ './components/LoginComponent')
+    }]
 })
+
+router.beforeEach((to, from, next) => {
+
+    const isAuth = store.state.userStore.user.isAuth
+
+    // Validate login route request
+    if (to.name == 'login' && !isAuth) {
+
+        if (store.getters.validateAuth) {
+            try {
+
+                store.dispatch('getClaims')
+
+                return next({ name: 'home' })
+
+            } catch (error) {
+
+                return next()
+            }
+
+        }
+
+        return next()
+    }
+
+    if (to.name == 'login' && isAuth) {
+
+        return next({ name: 'home' })
+    }
+
+    // Validate all route request
+    if (!isAuth) {
+
+        if (store.getters.validateAuth) {
+
+            try {
+
+                store.dispatch('getClaims')
+
+                return next()
+
+            } catch (error) {
+
+                return next({ name: 'login' })
+            }
+
+        }
+
+        return next({ name: 'login' })
+    }
+
+    if (isAuth) {
+
+        return next()
+    }
+
+})
+
+export default router
