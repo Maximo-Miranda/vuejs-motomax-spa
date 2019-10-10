@@ -1,9 +1,39 @@
 <template>
     <div>
-        <h1>Payment Collection Component</h1>
+        <v-row>
+            <v-col>
+                <span class="headline">Pagos</span>
+            </v-col>
+        </v-row>
+        <v-row justify="center">
+            <v-col cols="12" xs="12" xl="8" >
+                <v-card>
 
+                    <v-data-table :headers="headers" :items="paymentList" :search="search" class="elevation-2">
 
-            <v-footer :fixed=true color="#fafafa" class="pa-0">
+                        <template v-slot:item.action="{ item }">
+                            <v-icon
+                                    small
+                                    class="mr-2"
+                                    @click="editPayment(item)"
+                            >
+                                mdi-pen
+                            </v-icon>
+                            <v-icon
+                                    small
+                                    @click="deletePaymentDialog(item)"
+                            >
+                                mdi-delete
+                            </v-icon>
+                        </template>
+
+                    </v-data-table>
+
+                </v-card>
+            </v-col>
+        </v-row>
+
+        <v-footer :fixed=true color="#fafafa" class="pa-0">
 
                 <v-card color="#fafafa" flat width="100%" height="40px">
 
@@ -115,7 +145,6 @@
 
             </v-footer>
 
-
     </div>
 </template>
 
@@ -133,9 +162,11 @@
         },
         data: () => {
             return {
+                search: '',
                 dialog: false,
                 motorcycles: [],
-                payments: [],
+                paymentList: [],
+                headers: [],
                 paymentCollection:{
                     id: '',
                     motorcycle_id: '',
@@ -162,9 +193,53 @@
             ...mapActions(["getMotorcycles", "createPayment", "getPayments", "updatePayment", "deletePayment", "createPaymentCollection"]),
             async getPaymentsIndex(){
 
-                let result = await this.getPayments()
+                try {
 
-                this.payments = result
+                    this.headers = []
+                    this.paymentList = []
+
+                    this.$store.commit('showLoading')
+
+                    let payments = await this.getPayments()
+
+                    for(let i = 0; i < payments.length; i++){
+
+                        let record = {}
+
+                        for (const [key, val] of Object.entries(payments[i])) {
+
+                            if(i == 0){
+                                if(key != '_id' && key != '__v'){
+                                    this.headers.push({
+                                        text: key,
+                                        align: 'center',
+                                        sortable: true,
+                                        value: key
+                                    })
+                                }
+                            }
+
+                            record[key] = val
+                        }
+
+                        this.paymentList.push(record)
+                    }
+
+                    this.headers.push({ text: 'Opciones', value: 'action', sortable: false },)
+
+                    this.$store.commit('showLoading')
+
+                } catch (err) {
+
+                    this.$store.commit('showLoading')
+
+                    this.$swal.fire({
+                        type: 'error',
+                        title: 'Opps...',
+                        text: err
+                    })
+
+                }
 
             },
             async getAllMotorcycles(){
@@ -236,6 +311,8 @@
 
                         this.$store.commit('showLoading')
 
+                        this.getPaymentsIndex()
+
                     }
 
                 } catch (err) {
@@ -249,6 +326,12 @@
                     })
                 }
                 
+            },
+            editPayment(item){
+
+            },
+            deletePaymentDialog(item){
+
             },
             initModel(){
 

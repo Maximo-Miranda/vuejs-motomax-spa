@@ -368,8 +368,8 @@ export default {
 
             try {
 
-                this.headers = [],
-                this.motorcyclesList = [],
+                this.headers = []
+                this.motorcyclesList = []
 
                 this.$store.commit('showLoading')
 
@@ -398,7 +398,7 @@ export default {
                     this.motorcyclesList.push(record)
                 }
 
-                this.headers.push({ text: 'Opciones', value: 'action', sortable: false },)
+                this.headers.push({ text: 'Opciones', value: 'action', sortable: false })
 
                 this.$store.commit('showLoading')
 
