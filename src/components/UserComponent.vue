@@ -44,7 +44,6 @@
                                                 <v-container>
                                                     <!-- name and lastname -->
                                                     <v-row>
-
                                                         <v-col cols="12" xs="12" md="6">
                                                             <ValidationProvider name="nombre" rules="required" v-slot="{ errors, classes }">
                                                                     <v-text-field label="Nombres"

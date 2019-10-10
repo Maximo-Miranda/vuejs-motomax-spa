@@ -63,14 +63,15 @@ export default {
                 password: ''
             },
             showPassword: false,
-            loading: false
+						loading: false,
+			
         }
     },
     methods: {
         ...mapActions(['login']),
         async loginAccount() {
 
-            try {
+            try {							
 
                 this.loading = !this.loading
 

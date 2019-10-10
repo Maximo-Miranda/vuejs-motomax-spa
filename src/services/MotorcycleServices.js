@@ -7,7 +7,7 @@ async function IndexMotorcycles() {
 
     try {
 
-        let response = await axios.get(`${process.env.VUE_APP_API_URL}/motorcycles`, { headers: GetHeaders() })
+        let response = await axios.get(`${process.env.VUE_APP_API_URL}/motorcycles?limit=0`, { headers: GetHeaders() })
 
         return response.data.data.motorcycles
 

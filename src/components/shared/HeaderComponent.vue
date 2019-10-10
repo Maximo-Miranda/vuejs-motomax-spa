@@ -57,7 +57,7 @@
 
                 </v-list-item>
 
-                <v-list-item link>
+                <v-list-item :to="{name: 'paymentcollection'}" link>
 
                     <v-list-item-icon>
                         <v-icon>mdi-account</v-icon>
