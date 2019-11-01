@@ -17,6 +17,21 @@ async function IndexPayment() {
 
 }
 
+// GetPaymentByID
+async function GetPaymentByID(id){
+
+    try {
+
+        let response = await axios.get(`${process.env.VUE_APP_API_URL}/payment/${id}`, { headers: GetHeaders() })
+
+        return response.data.data
+
+    } catch (err) {
+        throw err
+    }
+
+}
+
 // StorePayment ...
 async function StorePayment(payment) {
 
@@ -25,7 +40,7 @@ async function StorePayment(payment) {
         const data = {
 
             title: payment.title,
-            payment_status: payment.status,
+            payment_status: payment.payment_status,
 
         }
 
@@ -91,4 +106,5 @@ export const PaymentServices = {
     UpdatePayment,
     SoftDeletePayment,
     DeletePayment,
+    GetPaymentByID,
 }

@@ -438,6 +438,17 @@ export default {
 
                 this.$store.commit('showLoading')
 
+                if(err.response){
+                   if(Number(err.response.status) == 401){
+                       this.$store.commit('userLogout')
+                       this.$router.push({name: 'login'})
+                   }
+                }
+
+               /* console.error(err.response.data);
+                console.error(err.response.status);
+                console.error(err.response.headers);*/
+
                 this.$swal.fire({
                     type: 'error',
                     title: 'Opps...',

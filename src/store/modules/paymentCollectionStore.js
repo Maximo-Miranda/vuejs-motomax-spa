@@ -30,6 +30,19 @@ export const paymentCollectionStore = {
             }
 
         },
+        queryPaymentCollections: async(context, data) => {
+
+            try {
+
+                const paymentCollections = await PaymentCollectionServices.QueryPaymentCollection(data)
+
+                return paymentCollections
+
+            } catch (err) {
+                throw err
+            }
+
+        },
         createPaymentCollection: async(context, data) => {
 
             try {

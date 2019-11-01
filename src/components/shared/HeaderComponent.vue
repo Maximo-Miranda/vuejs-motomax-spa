@@ -69,19 +69,7 @@
 
                 </v-list-item>
 
-                <v-list-item link>
-
-                    <v-list-item-icon>
-                        <v-icon>mdi-account</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                        <v-list-item-title>Pagos</v-list-item-title>
-                    </v-list-item-content>
-
-                </v-list-item>
-
-                <v-list-item :to="{name: 'login'}" link>
+                <v-list-item :to="{name: 'maintenance'}" link>
                     
                         <v-list-item-icon>
                             <v-icon>mdi-account</v-icon>

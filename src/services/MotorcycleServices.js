@@ -30,10 +30,26 @@ async function StoreMotorcycle(motorcycle) {
             license_plate: motorcycle.license_plate,
             price: motorcycle.price,
             date_of_purchase: motorcycle.date_of_purchase,
+            url_photo: motorcycle.url_photo,
 
         }
 
         let response = await axios.post(`${process.env.VUE_APP_API_URL}/motorcycles`, data, { headers: GetHeaders() })
+
+        return response.data.data
+
+    } catch (err) {
+        throw err
+    }
+
+}
+
+// GetMotorcycleByID
+async function GetMotorcycleByID(id){
+
+    try {
+
+        let response = await axios.get(`${process.env.VUE_APP_API_URL}/motorcycle/${id}`, { headers: GetHeaders() })
 
         return response.data.data
 
@@ -115,4 +131,5 @@ export const MotorcycleServices = {
     UpdateMotorcycle,
     SoftDeleteMotorcycle,
     DeleteMotorcycle,
+    GetMotorcycleByID,
 }

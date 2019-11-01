@@ -5,6 +5,7 @@ import { paymentStore } from './modules/paymentStore'
 import { generalStore } from './modules/generalStore'
 import { motorcycleStore } from './modules/motorcycleStore'
 import { paymentCollectionStore } from './modules/paymentCollectionStore'
+import { maintenanceStore } from './modules/maintenanceStore'
 
 Vue.use(Vuex)
 
@@ -15,5 +16,6 @@ export default new Vuex.Store({
         motorcycleStore,
         paymentCollectionStore,
         paymentStore,
+        maintenanceStore,
     }
 })

@@ -31,6 +31,19 @@ export const motorcycleStore = {
             }
 
         },
+        getMotorcycleByID: async(context, data) => {
+
+            try{
+
+                const motorcycle = await MotorcycleServices.GetMotorcycleByID(data.id)
+
+                return motorcycle
+
+            } catch (err) {
+                throw err
+            }
+
+        },
         validateLicensePlate: async(context, data) => {
 
             try {

@@ -17,6 +17,26 @@ async function IndexPaymentCollection() {
 
 }
 
+// QueryPaymentCollection ...
+async function QueryPaymentCollection(filter) {
+
+    try {
+
+        let data = {
+            date_from: filter.date_from,
+            date_end: filter.date_end
+        }
+
+        let response = await axios.post(`${process.env.VUE_APP_API_URL}/payments/collections/find/query?limite=0`, data,{ headers: GetHeaders() })
+
+        return response.data.data.payment_collections
+
+    } catch (err) {
+        throw err
+    }
+
+}
+
 // StorePaymentCollection ...
 async function StorePaymentCollection(paymentCollection) {
 
@@ -110,4 +130,5 @@ export const PaymentCollectionServices = {
     SoftDeletePaymentCollection,
     DeletePaymentCollection,
     GetPaymentCollectionID,
+    QueryPaymentCollection,
 }

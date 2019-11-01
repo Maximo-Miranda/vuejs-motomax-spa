@@ -27,6 +27,19 @@ export const userStore = {
     mutations: {
         userSingIn: (state, user) => {
             state.user = user
+        },
+        userLogout: (state) => {
+
+            state.user.id = ''
+            state.user.name = ''
+            state.user.lastname = ''
+            state.user.identification = ''
+            state.user.role = ''
+            state.user.img = ''
+            state.user.token = ''
+            state.user.isAuth = false
+
+            localStorage.removeItem("motomax_token")
         }
     },
     actions: {

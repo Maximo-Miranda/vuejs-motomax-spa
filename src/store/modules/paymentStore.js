@@ -5,7 +5,7 @@ export const paymentStore = {
         payment: {
             id: '',
             title: '',
-            status: ''
+            payment_status: ''
         }
     },
     getters: {},
@@ -33,6 +33,19 @@ export const paymentStore = {
             try {
 
                 const payment = await PaymentServices.StorePayment(data)
+
+                return payment
+
+            } catch (err) {
+                throw err
+            }
+
+        },
+        getPaymentByID: async(context, data) => {
+
+            try{
+
+                const payment = await PaymentServices.GetPaymentByID(data.id)
 
                 return payment
 

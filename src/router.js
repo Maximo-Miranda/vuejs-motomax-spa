@@ -6,6 +6,7 @@ import UserComponent from './components/UserComponent'
 import store from './store/store'
 import MotorcycleComponent from './components/MotorcycleComponent'
 import PaymentCollectionComponent from "./components/PaymentCollectionComponent";
+import MaintenanceComponent from "./components/MaintenanceComponent";
 
 Vue.use(Router)
 
@@ -20,7 +21,8 @@ const router = new Router({
             { path: 'home', component: Home, name: 'home' },
             { path: 'users', component: UserComponent, name: 'users' },
             { path: 'motorcycles', component: MotorcycleComponent, name: 'motorcycles' },
-            { path: 'paymentcollection', component: PaymentCollectionComponent, name: 'paymentcollection'}
+            { path: 'paymentcollection', component: PaymentCollectionComponent, name: 'paymentcollection'},
+            { path: 'maintenance', component: MaintenanceComponent, name: 'maintenance'}
         ]
     }, {
         path: '/login',
