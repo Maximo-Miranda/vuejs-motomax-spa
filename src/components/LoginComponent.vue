@@ -35,7 +35,7 @@
 
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn :disabled="pristine || invalid" color="primary" type="submit">Iniciar</v-btn>
+                                    <v-btn :disabled="pristine || invalid" color="primary" :loading="loading" type="submit">Iniciar</v-btn>
                                 </v-card-actions>
                             </form>
                         </ValidationObserver>
@@ -63,7 +63,7 @@ export default {
                 password: ''
             },
             showPassword: false,
-						loading: false,
+            loading: false,
 			
         }
     },

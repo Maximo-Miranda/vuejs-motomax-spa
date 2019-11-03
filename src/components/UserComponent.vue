@@ -24,7 +24,7 @@
                                     </template>
 
                                     <v-card>
-                                        <ValidationObserver v-slot="{ invalid, pristine, passes }">
+                                        <ValidationObserver ref="observer" v-slot="{ invalid, pristine, passes }">
                                             <form @submit.prevent="passes(saveUser)">
 
                                                 <!-- dialogs buttons -->
@@ -464,6 +464,8 @@ export default {
 
                 try {
 
+                    this.dialog = false
+
                     this.$store.commit('showLoading')
 
                     const userResponse = await this.createUser(this.user)
@@ -472,9 +474,13 @@ export default {
 
                     await this.users()
 
-                    this.dialog = false
-
                     this.initModel()
+
+                    // You should call it on the next frame
+                    requestAnimationFrame(() => {
+                        this.$refs.observer.reset();
+                    });
+
 
                     this.$swal.fire({
                         type: 'success',
@@ -508,6 +514,8 @@ export default {
 
                 try {
 
+                    this.dialog = false
+
                     this.$store.commit('showLoading')
 
                     let keys = Object.keys(this.user).filter(k => this.user[k] !== this.userUpdateOldInfo[k]);
@@ -520,13 +528,16 @@ export default {
 
                     const userResponse = await this.updateUser({id: this.user._id, info})
 
-                    this.$store.commit('showLoading')                    
+                    this.$store.commit('showLoading')
 
                     await this.users()
 
-                    this.dialog = false
-
                     this.initModel()
+
+                    // You should call it on the next frame
+                    requestAnimationFrame(() => {
+                        this.$refs.observer.reset();
+                    });
 
                     this.userUpdateOldInfo = {}
 

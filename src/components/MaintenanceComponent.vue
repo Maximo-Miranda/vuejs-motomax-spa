@@ -167,6 +167,7 @@
                                                 filled
                                                 label="Descripción"
                                                 auto-grow
+                                                placeholder="Ninguno"
                                                 v-model="maintenanceModel.description"
                                                 :error-messages="errors[0]"
                                         ></v-textarea>
@@ -282,9 +283,10 @@
 
                     if (maintenances.length > 0){
 
-                        let record = {}
 
                         for (let i = 0; i < maintenances.length; i++) {
+
+                            let record = {}
 
                             for (const [key, val] of Object.entries(maintenances[i])) {
 
@@ -309,9 +311,9 @@
 
                             }
 
+                            this.maintenanceList.push(record)
                         }
 
-                        this.maintenanceList.push(record)
                     }
 
 
@@ -387,16 +389,20 @@
                     if (this.maintenanceModel.photos) {
 
                         formDataStorage.append("photo", this.maintenanceModel.photos)
-                        formDataStorage.append("api_key", "MOTOMAXCORP2019")
+                        formDataStorage.append("api_key", process.env.VUE_APP_STORAGE_KEY)
 
                         imageUrl = await this.createImage(formDataStorage)
 
                         if (this.maintenanceModel.id != '') {
 
-                            await this.deleteImage({api_key: "MOTOMAXCORP2019", pathfile: this.maintenanceModel.url_photo})
+                            await this.deleteImage({api_key: process.env.VUE_APP_STORAGE_KEY, pathfile: this.maintenanceModel.url_photo})
 
                         }
 
+                    }
+
+                    if (this.maintenanceModel.description == ''){
+                        this.maintenanceModel.description = "Ninguno"
                     }
 
                     // additional data
@@ -407,7 +413,7 @@
                     formData.append("type_maintenance", this.maintenanceModel.type_maintenance)
                     formData.append("url_photo", imageUrl)
 
-                    if(this.maintenanceModel.id) {
+                    if(this.maintenanceModel.id != '') {
 
                         await this.updateMaintenance({id: this.maintenanceModel.id, info: formData})
 
@@ -497,7 +503,7 @@
 
                     if (this.maintenanceModel.id != '') {
 
-                        await this.deleteImage({api_key: "MOTOMAXCORP2019", pathfile: this.maintenanceModel.url_photo})
+                        await this.deleteImage({api_key: process.env.VUE_APP_STORAGE_KEY, pathfile: this.maintenanceModel.url_photo})
 
                     }
 

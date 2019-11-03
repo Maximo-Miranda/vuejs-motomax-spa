@@ -274,7 +274,7 @@
 
                                                                     </v-col>
                                                                     <v-col cols="12"  xs="12" md="2">
-                                                                        <v-btn color="primary" @click="getPaymentsCollectionByDate" type="button">Consultar</v-btn>
+                                                                        <v-btn color="primary" @click="getPaymentsCollectionByDate" :loading="btnLoading" type="button">Consultar</v-btn>
                                                                     </v-col>
                                                                 </v-row>
 
@@ -438,6 +438,7 @@ export default {
             date_from: "",
             date_end: "",
             valueByMonth: 0,
+            btnLoading: false,
         }
     },
     methods:{
@@ -537,6 +538,16 @@ export default {
             try {
 
                 this.$store.commit('showLoading')
+
+                const motorcycle = await this.getMotorcycleByID({id})
+
+                console.log("motorcycle", motorcycle)
+
+                if (motorcycle._id != '') {
+
+                    await this.deleteImage({api_key: process.env.VUE_APP_STORAGE_KEY, pathfile: motorcycle.url_photo})
+
+                }
 
                 await this.deleteMotorcycle(id)
 
@@ -641,17 +652,10 @@ export default {
 
                     if (this.motorcycle.photos) {
 
-
                         formDataStorage.append("photo", this.motorcycle.photos)
-                        formDataStorage.append("api_key", "MOTOMAXCORP2019")
+                        formDataStorage.append("api_key", process.env.VUE_APP_STORAGE_KEY)
 
                         this.motorcycle.url_photo = await this.createImage(formDataStorage)
-
-                        /*if (this.motorcycle.id != '') {
-
-                            await this.deleteImage({api_key: "MOTOMAXCORP2019", pathfile: this.motorcycle.url_photo})
-
-                        }*/
 
                     }
 
@@ -706,13 +710,13 @@ export default {
 
 
                         formDataStorage.append("photo", this.motorcycle.photos)
-                        formDataStorage.append("api_key", "MOTOMAXCORP2019")
+                        formDataStorage.append("api_key", process.env.VUE_APP_STORAGE_KEY)
 
                         info.url_photo = await this.createImage(formDataStorage)
 
                         if (this.motorcycle._id != '') {
 
-                            await this.deleteImage({api_key: "MOTOMAXCORP2019", pathfile: this.motorcycle.url_photo})
+                            await this.deleteImage({api_key: process.env.VUE_APP_STORAGE_KEY, pathfile: this.motorcycle.url_photo})
 
                         }
 
@@ -868,6 +872,8 @@ export default {
 
             try{
 
+                this.btnLoading = true
+
                 this.valueByMonth = 0
 
                 this.$store.commit('showLoading')
@@ -878,9 +884,13 @@ export default {
                     this.valueByMonth += Number(val.value)
                 }
 
+                this.btnLoading = false
+
                 this.$store.commit('showLoading')
 
             }catch (err) {
+
+                this.btnLoading = false
 
                 this.$store.commit('showLoading')
 
@@ -891,7 +901,7 @@ export default {
                 })
 
             }
-            console.log(this.date_from, this.date_end)
+
         },
     },
     computed:{
